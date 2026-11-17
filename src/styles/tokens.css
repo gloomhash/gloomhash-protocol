@@ -1,0 +1,42 @@
+/* tokens.css — the ONLY file in this project allowed to hold a colour literal.
+   Provenance (read from the pixels of brand/ assets, see scripts/inspect-assets.mjs):
+   --bg      #000000  mode of opaque pixels, brand/LOGO GLOOM PNG.png (3,407,416 px, 85.2%); JPG logo + banner share the near-black bin.
+   --fg      #fbfbfb  mode glyph pixel, brand/LOGO GLOOM PNG.png (199,637 px). Transparent logo PNG glyph reads #ffffff (alpha-feathered), same family.
+   --color-accent #00ffcc  specified by the project brief (mint pulse); not sampled from an asset.
+   Surface scale (--s1..--s4, --rule) re-measured against the reference tones as fg/bg ratios (#181818=9.5%, #1F1F1F=12.4%, #272727=15.5%, #313131=19.5%, #595A5A=35%).
+   Every other tone below is derived from these three with color-mix, never typed. */
+:root {
+  color-scheme: dark;
+  --bg: #000000;
+  --fg: #fbfbfb;
+  --color-accent: #00ffcc;
+
+  --s1: color-mix(in srgb, var(--fg) 9.5%, var(--bg));
+  --s2: color-mix(in srgb, var(--fg) 12.4%, var(--bg));
+  --s3: color-mix(in srgb, var(--fg) 15.5%, var(--bg));
+  --s4: color-mix(in srgb, var(--fg) 19.5%, var(--bg));
+  --rule: color-mix(in srgb, var(--fg) 35%, var(--bg));
+  --soft: color-mix(in srgb, var(--fg) 82%, var(--bg));
+  --dim: color-mix(in srgb, var(--fg) 64%, var(--bg));
+  --faint: color-mix(in srgb, var(--fg) 54%, var(--bg));
+  --lattice: color-mix(in srgb, var(--fg) 14%, transparent);
+  --glass: color-mix(in srgb, var(--fg) 14%, var(--bg));
+  --nav: color-mix(in srgb, var(--glass) 92%, transparent);
+  --hit: color-mix(in srgb, var(--fg) 10%, transparent);
+  --hit-hover: color-mix(in srgb, var(--fg) 20%, transparent);
+  --veil: color-mix(in srgb, var(--bg) 90%, transparent);
+  --spot: color-mix(in srgb, var(--fg) 10%, transparent);
+  --accent-soft: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  --accent-glow: color-mix(in srgb, var(--color-accent) 38%, transparent);
+  --accent-faint: color-mix(in srgb, var(--color-accent) 8%, transparent);
+
+  /* Spacing (px), measured from the reference scale */
+  --sp-25: 2px; --sp-50: 4px; --sp-75: 8px; --sp-100: 12px; --sp-200: 16px; --sp-300: 24px;
+  --sp-400: 32px; --sp-500: 40px; --sp-600: 48px; --sp-700: 64px; --sp-800: 80px; --sp-900: 96px;
+  /* Radius (px) */
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-2xl: 16px; --r-full: 9999px;
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, "Liberation Mono", monospace;
+  --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}

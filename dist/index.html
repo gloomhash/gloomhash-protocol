@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' https: data:; font-src 'self'; connect-src https://api.dexscreener.com https://frontend-api.pump.fun https://solana-rpc.publicnode.com; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>GLOOMHASH | Solana market terminal</title>
+<meta name="description" content="GLOOMHASH is a live Solana market terminal: boosted tokens ranked in real time, one pinned row for our own contract, zero wallet prompts.">
+<link rel="canonical" href="https://gloomhash.fun/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gloomhash.fun/">
+<meta property="og:title" content="GLOOMHASH | Solana market terminal">
+<meta property="og:description" content="Boosted Solana tokens ranked live, with one pinned row held for GLOOMHASH.">
+<meta property="og:image" content="https://gloomhash.fun/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/logo-180.png">
+<link rel="stylesheet" href="assets/app.css">
+<script src="assets/app.js" defer></script>
+</head>
+<body data-brand-logo="brand/gloom-logo.png">
+<div class="progress" id="progress" aria-hidden="true"></div>
+<a class="skip" href="#main">Jump to main</a>
+<svg class="sprite" aria-hidden="true">
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></symbol>
+<symbol id="i-github" viewBox="0 0 16 16"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></symbol>
+<symbol id="i-down" viewBox="0 0 256 256"><path d="M208.49,152.49l-72,72a12,12,0,0,1-17,0l-72-72a12,12,0,0,1,17-17L116,187V40a12,12,0,0,1,24,0V187l51.51-51.52a12,12,0,0,1,17,17Z"/></symbol>
+<symbol id="i-caret" viewBox="0 0 256 256"><path d="M216.49,104.49l-80,80a12,12,0,0,1-17,0l-80-80a12,12,0,0,1,17-17L128,159l71.51-71.52a12,12,0,0,1,17,17Z"/></symbol>
+<symbol id="i-right" viewBox="0 0 256 256"><path d="M184.49,136.49l-80,80a12,12,0,0,1-17-17L159,128,87.51,56.49a12,12,0,1,1,17-17l80,80A12,12,0,0,1,184.49,136.49Z"/></symbol>
+<symbol id="i-out" viewBox="0 0 256 256"><path d="M200,64V168a12,12,0,0,1-24,0V93L72.49,196.49a12,12,0,0,1-17-17L159,76H88a12,12,0,0,1,0-24H188A12,12,0,0,1,200,64Z"/></symbol>
+</svg>
+
+<header class="nav">
+  <div class="nav-bar">
+    <div class="nav-left">
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menu"><span></span><span></span></button>
+      <a class="brand" href="./" aria-label="GLOOMHASH home"><img src="brand/gloom-logo.png" width="28" height="28" alt=""><span class="dots">GLOOMHASH</span></a>
+    </div>
+    <nav class="nav-links label" aria-label="Sections">
+      <a href="#board">Board</a>
+      <a href="#guard">Guard</a>
+      <a href="#verify">Verify</a>
+      <a href="#questions">Questions</a>
+    </nav>
+    <div class="socials" id="socials" aria-label="Social links">
+      <a class="soc" data-social="x" data-state="stated" href="https://x.com/usegloom" target="_blank" rel="noopener noreferrer" aria-label="X @usegloom"><svg class="ic" aria-hidden="true"><use href="#i-x"></use></svg></a>
+      <span class="soc" data-social="github" data-state="absent" role="img" aria-disabled="true" aria-label="GitHub, not published"><svg class="ic" aria-hidden="true"><use href="#i-github"></use></svg></span>
+    </div>
+  </div>
+</header>
+
+<div class="ca-wrap">
+<div class="ca" data-ca-state="absent" role="group" aria-disabled="true" aria-label="Contract address not stated"><span class="label">CA</span><span class="ca-addr" data-ca-exempt>· · · · · awaiting announcement · · · · ·</span><span class="ca-do label">Inert</span></div>
+</div>
+
+<nav class="menu" id="menu" aria-label="Main" inert>
+  <a href="#board" class="dots">Board</a>
+  <a href="#guard" class="dots">Guard</a>
+  <a href="#verify" class="dots">Verify</a>
+  <a href="#questions" class="dots">Questions</a>
+</nav>
+
+<main id="main">
+  <section class="hero stage" id="top" aria-labelledby="hero-title">
+    <div class="mesh layer" data-depth="8" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="container hero-top">
+      <p class="label">[ Solana / live terminal ]</p>
+      <h1 class="display hero-title" id="hero-title">Watch Solana breathe<br>while others doze.</h1>
+      <p class="body-3 hero-sub">GLOOMHASH keeps one lit screen inside a dim chamber. Solana's loudest boosted tokens, ranked as they move. Zero signatures requested, zero wallets touched.</p>
+      <div class="hero-actions">
+        <a class="act act-light" href="#board">Enter the board<svg class="ic" aria-hidden="true"><use href="#i-down"></use></svg></a>
+        <a class="link" href="#guard">See the guard<svg class="ic" aria-hidden="true"><use href="#i-right"></use></svg></a>
+      </div>
+    </div>
+
+    <div class="container show" id="stage">
+      <div class="show-left">
+        <div class="panel-card spot">
+          <p class="label">Feed status</p>
+          <div><span class="pill" data-status-pill data-status="loading" role="status"><span class="dot"></span><span data-status-text>Connecting</span></span></div>
+          <p class="caption-2" data-status-note>Reaching the market source.</p>
+        </div>
+      </div>
+      <div class="show-phone">
+        <svg class="waves layer" data-depth="10" viewBox="0 0 1240 1240" aria-hidden="true"><circle cx="620" cy="620" r="250"/><circle cx="620" cy="620" r="320"/><circle cx="620" cy="620" r="390"/><circle cx="620" cy="620" r="460"/><circle cx="620" cy="620" r="530"/><circle cx="620" cy="620" r="600"/><circle class="ping" cx="620" cy="620" r="600"/></svg>
+        <div class="hero-core layer" data-depth="26"><div class="hero-logo"><img src="assets/logo-640.png" width="224" height="224" alt="GLOOMHASH mark" id="hero-logo"></div></div>
+      </div>
+      <div class="show-right">
+        <p class="label spec-title">Board facts</p>
+        <ul class="spec label">
+          <li>Chain<b>Solana mainnet</b></li>
+          <li>Ranking<b>Boost spend</b></li>
+          <li>Refresh<b>Every minute</b></li>
+          <li>Wallet<b>Never asked</b></li>
+          <li>Contract<b data-spec-ca>Pending</b></li>
+          <li>Tracking<b>None</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="ticker" aria-label="Live ticker">
+    <div class="ticker-track" id="ticker-track" aria-live="off"></div>
+  </section>
+
+  <section class="tagline-sec" aria-label="In brief">
+    <div class="container">
+      <p class="label reveal">[ Signal ]</p>
+      <p class="tagline display" id="tagline">Boosted tokens climb.<br>Noise keeps shouting.<br>One row holds still,<br>kept open for ours.</p>
+    </div>
+  </section>
+
+  <section class="stage" id="board" aria-labelledby="board-title">
+    <div class="container">
+      <div class="board-head reveal">
+        <div class="sec-head">
+          <h2 class="display" id="board-title">The Board</h2>
+          <p class="body-3">Ten rows ranked by paid attention. Row one is held for GLOOMHASH, whatever the crowd is chasing.</p>
+        </div>
+        <span class="pill" data-status-pill data-status="loading"><span class="dot"></span><span data-status-text>Connecting</span></span>
+      </div>
+      <div class="board" id="board-rows" role="table" aria-label="Market board">
+        <div class="board-cols label" role="row"><span>#</span><span>Asset</span><span>Price</span><span>24H</span><span>Volume</span><span>Liquidity</span></div>
+      </div>
+      <p class="board-msg caption-2" id="board-msg" role="status" hidden></p>
+      <p class="caption-5 fine">Informational only. Not financial advice.</p>
+    </div>
+  </section>
+
+  <section class="stage" id="chapters" aria-labelledby="chapters-title">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="display" id="chapters-title">What the screen does</h2>
+        <p class="body-3">Five habits, kept on purpose. Each one exists to keep your attention honest.</p>
+      </div>
+      <div class="chapters">
+        <article class="chap reveal spot">
+          <span class="chap-n dots">(01)</span>
+          <div class="frame"><svg viewBox="0 0 400 400" aria-hidden="true"><path class="d" d="M60 320H340"/><rect class="s" x="80" y="230" width="28" height="90" rx="4"/><rect class="s" x="140" y="190" width="28" height="130" rx="4"/><rect class="s" x="200" y="140" width="28" height="180" rx="4"/><rect class="g" x="260" y="80" width="28" height="240" rx="4"/><text x="60" y="64">[ ranked by spend ]</text></svg></div>
+          <h3 class="card-heading">Ranked by spend, never by hunch</h3>
+          <p class="body-3">Order comes straight from boost totals on Dexscreener. We read that list. We never reshuffle it.</p>
+        </article>
+        <article class="chap reveal spot">
+          <span class="chap-n dots">(02)</span>
+          <div class="frame"><svg viewBox="0 0 400 400" aria-hidden="true"><rect class="d" x="60" y="110" width="280" height="56" rx="12"/><rect class="d" x="60" y="190" width="280" height="40" rx="12"/><rect class="d" x="60" y="254" width="280" height="40" rx="12"/><circle class="g" cx="92" cy="138" r="8"/><text x="60" y="88">[ slot one ]</text></svg></div>
+          <h3 class="card-heading">Slot one stays ours</h3>
+          <p class="body-3">The pinned row wakes up the instant a contract is stated. Before that, it rests dim; the mark stays lit.</p>
+        </article>
+        <article class="chap reveal spot">
+          <span class="chap-n dots">(03)</span>
+          <div class="frame"><svg viewBox="0 0 400 400" aria-hidden="true"><circle class="d" cx="130" cy="200" r="64"/><circle class="d" cx="270" cy="200" r="64"/><path class="a" d="M180 200H220"/><text x="60" y="84">[ two sources, side by side ]</text></svg></div>
+          <h3 class="card-heading">Two sources, side by side</h3>
+          <p class="body-3">Dexscreener and pump.fun get asked together. If one stalls, its partner still paints the row.</p>
+        </article>
+        <article class="chap reveal spot">
+          <span class="chap-n dots">(04)</span>
+          <div class="frame"><svg viewBox="0 0 400 400" aria-hidden="true"><path class="d" d="M50 280Q110 120 170 220T290 150T350 190"/><circle class="g" cx="350" cy="190" r="8"/><text x="50" y="340">[ stale beats blank ]</text></svg></div>
+          <h3 class="card-heading">Stale beats blank</h3>
+          <p class="body-3">A failed refresh keeps previous good figures visible, then retries after longer and longer pauses.</p>
+        </article>
+        <article class="chap reveal spot">
+          <span class="chap-n dots">(05)</span>
+          <div class="frame"><svg viewBox="0 0 400 400" aria-hidden="true"><rect class="d" x="100" y="150" width="200" height="100" rx="16"/><path class="a" d="M150 200l30 30 70-70"/><text x="100" y="124">[ one registry ]</text></svg></div>
+          <h3 class="card-heading">Addresses judged by one record</h3>
+          <p class="body-3">Paste any address into the checker. It compares against a single registry entry and will not guess.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" aria-labelledby="how-title">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="display" id="how-title">Reading it</h2>
+        <p class="body-3">Three moves. No setup in between.</p>
+      </div>
+      <ol class="steps reveal">
+        <li class="spot"><span class="n dots" aria-hidden="true">01</span><h3 class="heading-6">Arrive at our board</h3><p class="body-3">Rows populate straight off the live feed. No install, no approval.</p></li>
+        <li class="spot"><span class="n dots" aria-hidden="true">02</span><h3 class="heading-6">Watch figures shift</h3><p class="body-3">Every refresh nudges price, volume and liquidity; a quick flash marks whatever shifted.</p></li>
+        <li class="spot"><span class="n dots" aria-hidden="true">03</span><h3 class="heading-6">Verify, then decide</h3><p class="body-3">Run any address through our checker prior to pasting it near a wallet.</p></li>
+      </ol>
+      <p class="aside body-3 reveal">Screens inform. Decisions stay with you.</p>
+    </div>
+  </section>
+
+  <section class="stage" id="feed" aria-labelledby="feed-title">
+    <div class="container split">
+      <div class="frame reveal"><svg viewBox="0 0 400 400" aria-hidden="true"><circle class="d" cx="200" cy="200" r="62"/><circle class="d" cx="200" cy="200" r="106"/><circle class="d" cx="200" cy="200" r="150"/><circle class="g" cx="200" cy="200" r="9"/><text x="150" y="48">[ source ]</text></svg></div>
+      <div class="split-copy">
+        <p class="label reveal">[ The feed ]</p>
+        <h2 class="display reveal" id="feed-title">Where figures originate</h2>
+        <p class="body-3 soft reveal">Public endpoints, queried straight by our script. No relay server, no private cache standing between.</p>
+        <ol class="points reveal">
+          <li><h3 class="heading-6">Boost list first</h3><p class="body-3">The top boosted tokens set the cast. Only Solana entries survive the filter.</p></li>
+          <li><h3 class="heading-6">Pair detail second</h3><p class="body-3">Each token gets its pairs fetched; whichever pair trades most represents it.</p></li>
+          <li><h3 class="heading-6">Logos with fallbacks</h3><p class="body-3">Should an image fail, a lettered tile steps in; each row retains shape.</p></li>
+          <li><h3 class="heading-6">Quiet while hidden</h3><p class="body-3">Polling halts while this tab sits hidden, then fires one request upon return.</p></li>
+          <li><h3 class="heading-6">Growing pauses on failure</h3><p class="body-3">Retries space out exponentially, which spares any struggling source a hammering.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section id="guard" aria-labelledby="guard-title">
+    <div class="container split rev">
+      <div class="frame reveal"><svg viewBox="0 0 400 400" aria-hidden="true"><rect class="d" x="110" y="110" width="180" height="180" rx="28"/><path class="d" d="M150 66V110M200 66V110M250 66V110M150 290V334M200 290V334M250 290V334M66 150H110M66 200H110M66 250H110M290 150H334M290 200H334M290 250H334"/><path class="a" d="M165 200l28 28 46-52"/><text x="110" y="364">[ registry only ]</text></svg></div>
+      <div class="split-copy">
+        <p class="label reveal">[ The guard ]</p>
+        <h2 class="display reveal" id="guard-title">How addresses get judged</h2>
+        <p class="body-3 soft reveal">Look-alike strings drain wallets. One written record stands between you and them.</p>
+        <ol class="points reveal">
+          <li><h3 class="heading-6">One record per fact</h3><p class="body-3">Contract, links and sources each hold a status: stated, absent or unconfirmed.</p></li>
+          <li><h3 class="heading-6">Absent means inert</h3><p class="body-3">A missing fact renders as a dead control. No link, no copy button, no guesswork.</p></li>
+          <li><h3 class="heading-6">Shape is never a verdict</h3><p class="body-3">An address-looking string, whichever chain it resembles, is weighed against the registry, never rejected over its form.</p></li>
+          <li><h3 class="heading-6">The contract slot is exempt</h3><p class="body-3">The pinned address up top is registry content itself, so the scanner skips it.</p></li>
+          <li><h3 class="heading-6">Handles come from links</h3><p class="body-3">We store the full URL and derive the handle from it. Never the reverse.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="stage" id="verify" aria-labelledby="verify-title">
+    <div class="container install">
+      <div class="install-copy reveal">
+        <p class="label">[ Verify ]</p>
+        <h2 class="display" id="verify-title">Test an address in seconds.</h2>
+        <p class="body-3">Paste a string, get a verdict. Identical logic powers the box beside this text; the full project builds locally.</p>
+        <ul class="stores label" aria-label="Destinations" data-services="stores">
+<li data-social="x" data-state="stated"><svg class="ic" aria-hidden="true"><use href="#i-x"></use></svg><b>X</b><a class="link" href="https://x.com/usegloom" target="_blank" rel="noopener noreferrer">@usegloom</a></li>
+<li data-social="github" data-state="absent"><svg class="ic" aria-hidden="true"><use href="#i-github"></use></svg><b>GitHub</b><span class="link" aria-disabled="true">Not published</span></li>
+        </ul>
+        <p class="caption-2 fine">Early release. Zero third-party audits exist yet.</p>
+      </div>
+
+      <div class="term reveal">
+        <div class="term-tabs">
+          <div class="tabs" role="tablist" aria-label="Mode">
+            <button type="button" role="tab" data-way="check" aria-selected="true">Checker</button>
+            <button type="button" role="tab" data-way="build" aria-selected="false">Build</button>
+          </div>
+          <div class="tabs" role="tablist" aria-label="Shell" data-os-tabs hidden>
+            <button type="button" role="tab" data-os="win" aria-selected="true">PowerShell</button>
+            <button type="button" role="tab" data-os="unix" aria-selected="false">Bash</button>
+          </div>
+        </div>
+
+        <div class="how" data-how="check-win check-unix">
+          <p class="body-3">Drop in any Solana or EVM-shaped string. Verdicts derive off registry data alone.</p>
+          <form class="scan" id="scan-form" autocomplete="off">
+            <label class="label" for="scan-input">Address to test</label>
+            <div class="scan-row">
+              <input id="scan-input" type="text" spellcheck="false" autocapitalize="off" placeholder="Paste here">
+              <button class="act act-light" type="submit">Test</button>
+            </div>
+            <div class="verdict" id="verdict" data-kind="idle" role="status" aria-live="polite">Awaiting input.</div>
+          </form>
+          <div class="warn-banner caption-2" id="warn-banner" role="alert" hidden></div>
+        </div>
+
+        <div class="how" data-how="build-win" hidden>
+          <ol class="points">
+            <li><h3 class="heading-6">Enter the folder</h3><div class="code"><button class="act act-sm" type="button" data-copy="p-win-1">Copy</button><pre id="p-win-1">cd gloomhash</pre></div></li>
+            <li><h3 class="heading-6">Install and build</h3><div class="code"><button class="act act-sm" type="button" data-copy="p-win-2">Copy</button><pre id="p-win-2">npm install
+npm run build</pre></div></li>
+            <li><h3 class="heading-6">State a contract</h3><div class="code"><button class="act act-sm" type="button" data-copy="p-win-3">Copy</button><pre id="p-win-3">$env:GLOOM_CA = "YOUR_MINT_ADDRESS"; npm run build</pre></div></li>
+          </ol>
+          <p class="caption-2 fine">Output lands inside dist, ready for any static host.</p>
+        </div>
+
+        <div class="how" data-how="build-unix" hidden>
+          <ol class="points">
+            <li><h3 class="heading-6">Enter the folder</h3><div class="code"><button class="act act-sm" type="button" data-copy="p-unx-1">Copy</button><pre id="p-unx-1">cd gloomhash</pre></div></li>
+            <li><h3 class="heading-6">Install and build</h3><div class="code"><button class="act act-sm" type="button" data-copy="p-unx-2">Copy</button><pre id="p-unx-2">npm install
+npm run build</pre></div></li>
+            <li><h3 class="heading-6">State a contract</h3><div class="code"><button class="act act-sm" type="button" data-copy="p-unx-3">Copy</button><pre id="p-unx-3">GLOOM_CA=YOUR_MINT_ADDRESS npm run build</pre></div></li>
+          </ol>
+          <p class="caption-2 fine">Output lands inside dist, ready for any static host.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="trust" aria-labelledby="trust-title">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="display" id="trust-title">Kept deliberately small</h2>
+        <p class="body-3">A market screen ought to demand zero and leak zero.</p>
+      </div>
+      <div class="proofs reveal">
+        <article class="spot"><h3 class="heading-6">No wallet prompts</h3><p class="body-3">No control here requests linking, signing or approving. Should one appear, shut the tab.</p></article>
+        <article class="spot"><h3 class="heading-6">Zero trackers, zero cookies</h3><p class="body-3">Analytics scripts and third-party fonts are absent. Requests reach market sources, nothing else.</p></article>
+        <article class="spot"><h3 class="heading-6">Read-only by design</h3><p class="body-3">Our script merely reads public endpoints. Keys stay absent; funds never move.</p></article>
+        <article class="spot"><h3 class="heading-6">Source stays inspectable</h3><p class="body-3">Registry, gates and market code ship as plain modules, readable throughout.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="stage" id="questions" aria-labelledby="questions-title">
+    <div class="container reading">
+      <div class="sec-head reveal"><h2 class="display" id="questions-title">Questions</h2></div>
+      <div class="reveal">
+        <details class="faq"><summary>Define GLOOMHASH.<svg class="ic" aria-hidden="true"><use href="#i-caret"></use></svg></summary><p>A Solana token teamed alongside one live market terminal. The terminal ranks boosted tokens and pins one row for our own contract.</p></details>
+        <details class="faq"><summary>Where sits the contract address?<svg class="ic" aria-hidden="true"><use href="#i-caret"></use></svg></summary><p>It lives inside the strip across the page top. Until one is announced, that strip stays dormant; copying is impossible. Distrust any address displayed elsewhere.</p></details>
+        <details class="faq"><summary>Why does row one look empty?<svg class="ic" aria-hidden="true"><use href="#i-caret"></use></svg></summary><p>Lacking a stated contract, no target exists to query. The row retains our mark plus dotted placeholders, then populates automatically once an announcement lands.</p></details>
+        <details class="faq"><summary>Where do prices originate?<svg class="ic" aria-hidden="true"><use href="#i-caret"></use></svg></summary><p>Dexscreener supplies ranking and pair data. pump.fun adds artwork and metadata for our own token. Each source answers publicly.</p></details>
+        <details class="faq"><summary>Does a figure ever go blank?<svg class="ic" aria-hidden="true"><use href="#i-caret"></use></svg></summary><p>Solely when some source never once replied. After one success, failures leave old figures standing and retry across longer gaps.</p></details>
+        <details class="faq"><summary>Does GLOOMHASH want my wallet?<svg class="ic" aria-hidden="true"><use href="#i-caret"></use></svg></summary><p>Never. Nothing resembling a wallet prompt exists. Treat any lookalike requesting a signature as hostile.</p></details>
+        <details class="faq"><summary>Does boosting imply safety?<svg class="ic" aria-hidden="true"><use href="#i-caret"></use></svg></summary><p>No. A boost means someone paid for exposure, nothing more. Research each project yourself.</p></details>
+        <details class="faq"><summary>Which facts can the checker confirm?<svg class="ic" aria-hidden="true"><use href="#i-caret"></use></svg></summary><p>Only whether your string equals the registry contract. It cannot vouch for any other address.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="ending" aria-labelledby="ending-title">
+    <div class="container">
+      <p class="label reveal">[ Stay lit ]</p>
+      <h2 class="display reveal" id="ending-title">Keep the screen on.<br>Keep the room dark.</h2>
+      <ul class="dest reveal">
+        <li><a class="dots" href="#board">Board</a></li>
+        <li><a class="dots" href="#verify">Verify</a></li>
+        <li><a class="dots" href="#questions">Ask</a></li>
+      </ul>
+      <ul class="service label reveal" data-services="foot">
+<li data-social="x" data-state="stated"><a href="https://x.com/usegloom" target="_blank" rel="noopener noreferrer">X<svg class="ic" aria-hidden="true"><use href="#i-out"></use></svg></a></li>
+<li data-social="github" data-state="absent"><span class="svc" aria-disabled="true">GitHub<span>Not published</span></span></li>
+      </ul>
+      <div class="legal label">
+        <span>Cookies absent. Trackers absent. Wallet access absent.</span>
+        <span>Data is informational, not advice.</span>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
